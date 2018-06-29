@@ -77,4 +77,5 @@ Plugins/*/Intermediate/*
 DerivedDataCache/*
 
 # Starter content
-/Content/StarterContent/*
+Building_Escape/Content/StarterContent/
+Building_Escape/Intermediate/
