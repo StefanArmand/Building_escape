@@ -5,21 +5,17 @@ using System.Collections.Generic;
 
 public class Building_EscapeEditorTarget : TargetRules
 {
-	public Building_EscapeEditorTarget(TargetInfo Target)
-	{
+	public Building_EscapeEditorTarget(TargetInfo Target) : base(Target)
+    {
 		Type = TargetType.Editor;
-	}
+
+        bUseUnityBuild = false;
+        bUsePCHFiles = false;
+
+        ExtraModuleNames.Add("Building_Escape");
+    }
 
 	//
 	// TargetRules interface.
 	//
-
-	public override void SetupBinaries(
-		TargetInfo Target,
-		ref List<UEBuildBinaryConfiguration> OutBuildBinaryConfigurations,
-		ref List<string> OutExtraModuleNames
-		)
-	{
-		OutExtraModuleNames.AddRange( new string[] { "Building_Escape" } );
-	}
 }

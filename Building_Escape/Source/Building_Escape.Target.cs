@@ -5,21 +5,16 @@ using System.Collections.Generic;
 
 public class Building_EscapeTarget : TargetRules
 {
-	public Building_EscapeTarget(TargetInfo Target)
+	public Building_EscapeTarget(TargetInfo Target) : base (Target)
 	{
 		Type = TargetType.Game;
-	}
 
-	//
-	// TargetRules interface.
-	//
+        ExtraModuleNames.Add("Building_Escape");
+    }
 
-	public override void SetupBinaries(
-		TargetInfo Target,
-		ref List<UEBuildBinaryConfiguration> OutBuildBinaryConfigurations,
-		ref List<string> OutExtraModuleNames
-		)
-	{
-		OutExtraModuleNames.AddRange( new string[] { "Building_Escape" } );
-	}
+    //
+    // TargetRules interface.
+    //
+
+
 }
