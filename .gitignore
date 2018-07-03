@@ -77,7 +77,8 @@ Plugins/*/Intermediate/*
 DerivedDataCache/*
 
 # Starter content
-Building_Escape/Content/StarterContent/
+Building_Escape/Content/StarterContent/Textures
+Building_Escape/Content/StarterContent/HDRI
 Building_Escape/Intermediate/
 Building_Escape/Binaries/
 Building_Escape/Saved/
