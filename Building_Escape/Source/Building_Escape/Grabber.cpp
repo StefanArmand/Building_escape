@@ -5,6 +5,7 @@
 #include "GameFramework/PlayerController.h"
 #include "Engine/World.h"
 #include "Runtime/Core/Public/Math/Vector.h"
+#include "Components/PrimitiveComponent.h"
 
 #define OUT
 
@@ -52,15 +53,25 @@ void UGrabber::SetupInputComponent()
 void UGrabber::Grab() {
 	UE_LOG(LogTemp, Warning, TEXT("Grab Pressed"));
 
-	GetFirstPhysicsBodyInReach();
+	auto HitResult = GetFirstPhysicsBodyInReach();
+	auto ComponentToGrab = HitResult.GetComponent();
+	auto ActorHit = HitResult.GetActor();
 
-	//TODO attach physics handle
+	if (ActorHit) {
+		//attach physics handle
+		PhysicsHandle->GrabComponent(
+			ComponentToGrab,
+			NAME_None,
+			ComponentToGrab->GetOwner()->GetActorLocation(),
+			true // allow rotation
+		);
+	}
 }
 
 void UGrabber::Release() {
 	UE_LOG(LogTemp, Warning, TEXT("Grab Released"));
 
-	//TODO release physics handle
+	PhysicsHandle->ReleaseComponent();
 }
 
 // Called every frame
@@ -68,7 +79,19 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
+	FVector PlayerViewpointLocation;
+	FRotator PlayerViewpointRotation;
+	GetWorld()->GetFirstPlayerController()->GetPlayerViewPoint(
+		OUT PlayerViewpointLocation,
+		OUT PlayerViewpointRotation
+	);
+
+	FVector LineTraceEnd = PlayerViewpointLocation + PlayerViewpointRotation.Vector() * Reach;
+
 	// if the physics handle is attached
+	if (PhysicsHandle->GrabbedComponent) {
+		PhysicsHandle->SetTargetLocation(LineTraceEnd);
+	}
 		// move the object we are holding
 }
 
@@ -97,5 +120,5 @@ FHitResult UGrabber::GetFirstPhysicsBodyInReach() const
 	if (ActorHit) {
 		UE_LOG(LogTemp, Warning, TEXT("The object hit is %s"), *(ActorHit->GetName()));
 	}
-	return FHitResult();
+	return Hit;
 }
